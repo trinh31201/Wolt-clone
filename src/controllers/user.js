@@ -32,7 +32,57 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
+const getUserById = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await userService.getUserById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'User not found.',
+      });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Error fetching user.' });
+  }
+};
+
+const deleteUserById = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const deletedCount = await userService.deleteUserById(userId);
+
+    if (deletedCount === 0) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'User not found.',
+      });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      message: 'User deleted successfully.',
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Error deleting user.' });
+  }
+};
+
+
 export default {
   addUser,
-  getAllUsers
+  getAllUsers,
+  getUserById,
+  deleteUserById
 };

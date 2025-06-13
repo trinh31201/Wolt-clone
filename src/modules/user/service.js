@@ -22,7 +22,13 @@ const getUsers = (query) => {
     order: [['name', 'ASC']],
   });
 };
+
+const getUserById = (id) => {
+  return User.findByPk(id);
+};
+
 export default {
   createUser,
-  getUsers
+  getUsers,
+  getUserById
 };
