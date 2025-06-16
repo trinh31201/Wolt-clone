@@ -1,10 +1,21 @@
 import bcrypt from 'bcrypt';
 
-export async function hashPassword(password) {
-  const saltRounds = 10;
-  return await bcrypt.hash(password, saltRounds);
+const saltRounds = 10;
+
+async function hashPassword(password) {
+  try {
+    return await bcrypt.hash(password, saltRounds);
+  } catch (err) {
+    throw new Error('Error hashing password');
+  }
 }
 
-export async function comparePassword(password, hashedPassword) {
-  return await bcrypt.compare(password, hashedPassword);
+async function comparePassword(password, hashedPassword) {
+  try {
+    return await bcrypt.compare(password, hashedPassword);
+  } catch (err) {
+    throw new Error('Error comparing password');
+  }
 }
+
+export default {hashPassword, comparePassword}

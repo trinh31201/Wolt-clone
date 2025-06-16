@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../../db/index.js";
+import sequelize from "../db/index.js";
+import hashUtils from '../utils/hash.js';
 
 const User = sequelize.define(
   "user",
@@ -19,6 +20,10 @@ const User = sequelize.define(
       allowNull: false,
       unique: true,
     },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     gender: {
       type: DataTypes.ENUM("Male", "Female", "Other"),
       allowNull: false,
@@ -36,5 +41,21 @@ const User = sequelize.define(
     paranoid: true, // Enables soft deletes
   }
 );
+
+User.addHook("beforeCreate", async (user) => {
+  if (user.password) {
+    user.password = await hashUtils.hashPassword(user.password);
+  }
+});
+
+User.addHook("beforeUpdate", async (user) => {
+  if (user.changed("password")) {
+    user.password = await hashUtils.hashPassword(user.password);
+  }
+});
+
+User.prototype.validPassword = async function (password) {
+  return await hashUtils.comparePassword(password, this.password);
+};
 
 export default User;

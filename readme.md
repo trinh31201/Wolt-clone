@@ -27,3 +27,12 @@ things to remember:
 -Dev/Prod configs	Separate safe local vs secure live system
 -Docker	Same environment everywhere
 - Postgres <==> pg (driver) <==> Sequelize (ORM) <==> Your JS code
+
+
+define()	Define model (memory only)
+sync()	Create table if not exists
+sync({ force: true })	Drop table and recreate
+v
+sync({ alter: true })	Compare model vs. DB, try to patch
+v
+migrations	Safest: explicit changes step-by-step

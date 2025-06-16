@@ -11,7 +11,7 @@ const config = dbConfig[env];
 const sequelize = new Sequelize(config);
 
 // Test DB connection
-sequelize.sync()
+sequelize.sync({ alter: true })
   .then(() => {
     console.log("✔ Database connected successfully.");
   })
