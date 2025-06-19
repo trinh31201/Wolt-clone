@@ -24,6 +24,10 @@ const getUserById = (id) => {
   return User.findByPk(id);
 };
 
+const getUserByEmail = (email) => {
+  return User.findOne({ where: { email } });
+};
+
 const deleteUserById = async (id) => {
   const deletedCount = await User.destroy({
     where: { id }
@@ -47,5 +51,6 @@ export default {
   getUsers,
   getUserById,
   deleteUserById,
-  updateUserById
+  updateUserById,
+  getUserByEmail
 };
