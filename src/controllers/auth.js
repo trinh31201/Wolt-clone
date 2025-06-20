@@ -51,7 +51,7 @@ const login = async (req, res, next) => {
       });
     }
 
-    const match = await comparePassword(password, user.password);
+    const match = await user.validPassword(password);
     if (!match) {
       return res.status(401).json({
         status: 'error',
